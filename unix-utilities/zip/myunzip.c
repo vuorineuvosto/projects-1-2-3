@@ -14,18 +14,15 @@ struct term
 };
 
 int main(int argc, char **argv){
-	if(argc > 1){
-		if(strcmp(argv[1], "help") == 0){
-			printf("Usage: $ ./myunzip zippedfile.z destination.txt\n");
-			exit(0);
-		}else{
+	if(argc == 3){
+		
 			char *outputfilename = argv[argc-1];
 			char *inputfilename = argv[1];
 			read_file(outputfilename, inputfilename);
-	}
+	
 	}else{
-		read_file("unzipped.txt", "encoded.z");
-
+		
+		printf("Usage: $ ./myunzip zippedfile.z destination.txt\n");
 	}
 	
 
@@ -45,9 +42,11 @@ void read_file(char *outputfilename, char *inputfilename){
 		perror("fail");
 		exit(1);
 	}
-		
+		//fprintf(fpOut, "\n");
 	while(fread(&output, sizeof(struct term), 1, fpIn)){
+		
         unzip(fpOut, output.id, output.name);
+        
 	}
   
     fclose (fpIn);
@@ -59,9 +58,11 @@ void unzip(FILE *fpOut, char id, char name){
 	//3a2b6d1 1f2k1f1k
 	// 6 -> 5 ... 1 -> 0
 	for(; id>0; id--){
-		printf("%c", name);
+		//printf("%c", name);
 		fprintf(fpOut, "%c", name);
 	}
+	//fprintf(fpOut, "\n");
 
 
 }
+//
