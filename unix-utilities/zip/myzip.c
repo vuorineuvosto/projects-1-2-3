@@ -6,9 +6,10 @@
 
 //aaabbcc --> 3a2b2c
 
-void encode(FILE *fp, FILE* filetozip, char str[]);
+void encode(FILE *fp, char str[]);
 void write_file(FILE *fp, char count, char letter);
-void read_file();
+void file_to_zip(FILE *fp, FILE *fptozip);
+void read_file(char *inputfilename);
 
 struct term
 {
@@ -20,39 +21,37 @@ int main(int argc, char **argv){
 	FILE *fp;
 	FILE *fptozip;
 	
-	if(argc > 1){
-		char *outputfilename = argv[argc-1];
-		char *inputfilename = argv[1];
+	if(argc == 3){
+		char *outputfilename = argv[1];
+		char *inputfilename = argv[2];
 
 		if(strcmp(argv[1], "help") == 0){
 			printf("Usage: $ ./myzip filetozip.txt zippedfile.z\n");
 			exit(0);
 		}
-		if((fp = fopen(inputfilename, "wb")) == NULL){
-			perror("fail");
+		if(strcmp(argv[1], "read") == 0){
+			read_file(inputfilename);
+			exit(0);
+			
+		}
+		else if((fp = fopen(inputfilename, "ab")) == NULL){
+			perror("No file found...");
 			exit(1);
 		}
-		if((fptozip = fopen(outputfilename, "w")) == NULL){
-			perror("fail");
+		else if((fptozip = fopen(outputfilename, "r")) == NULL){
+			perror("No file found...");
 			exit(1);
 		}
+		
 	
 	}else{
-				//DESTINATION FILE
-		if((fp = fopen("encoded.z", "wb")) == NULL){
-			perror("fail");
-			exit(1);
-		}
-		if((fptozip = fopen("encoded.txt", "wb")) == NULL){
-			perror("fail");
-			exit(1);
-		}
+		printf("Usage: $ ./myzip filetozip.txt zippedfile.z\n");
+		exit(7);
 	}
-	char str[] = "aaabbdddddd fkkfk 53 jannea 66.5 kertaa:D\n";
-
-	encode(fp, fptozip, str);
+	
+	
+	file_to_zip(fp, fptozip);
 	fclose(fp);
-	//read_file();
 	fclose(fptozip);
 	
 	return 0;
@@ -60,7 +59,7 @@ int main(int argc, char **argv){
 
 
 
-void encode(FILE *fp, FILE *filetozip, char str[]){
+void encode(FILE *fp, char str[]){
 	
 	char buffer[20];
 	char letter = str[0];
@@ -82,11 +81,6 @@ void encode(FILE *fp, FILE *filetozip, char str[]){
 
 		}
 	}
-	
-	//printf("%d%c", count, letter);
-	
-	
-	printf("Encode loppu.\n");
 
 }
 
@@ -98,10 +92,10 @@ void write_file(FILE *fp, char count, char letter){
 }
 
 
-void read_file(){
+void read_file(char *inputfilename){
 	struct term output;
 	FILE *fpOut;
-	if((fpOut = fopen("encoded.z", "rb")) == NULL){
+	if((fpOut = fopen(inputfilename, "rb")) == NULL){
 		perror("fail");
 		exit(1);
 	}
@@ -113,3 +107,19 @@ void read_file(){
     fclose (fpOut);
 	    
 }
+
+void file_to_zip(FILE *fp, FILE *fptozip){
+
+	char *line = NULL;
+	size_t len = 0;
+
+
+	while (getline(&line, &len, fptozip) != -1) {
+        //printf("%s", line);
+        encode(fp, line);
+    }
+
+
+	//encode(fp, str)
+}
+//
