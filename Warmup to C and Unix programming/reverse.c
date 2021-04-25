@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 	}
 	else if(argc == 1){			//no commandline arguments
 		inputFile = "big.txt";
-		outputFile = "defaultOutput.txt";
+		outputFile = "defaultoutput.txt";
 	}
 	else if(argc == 2){			//only input file given as commandline argument
 		inputFile = argv[1];
