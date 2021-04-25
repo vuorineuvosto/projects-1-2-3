@@ -1,0 +1,1 @@
+int checkInput(char* );
