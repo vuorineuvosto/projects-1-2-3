@@ -1,0 +1,2 @@
+
+int checkString(char* , char**);
