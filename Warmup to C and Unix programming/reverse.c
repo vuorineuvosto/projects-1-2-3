@@ -23,11 +23,15 @@ int main(int argc, char **argv){
 	}
 	else if(argc == 2){			//only input file given as commandline argument
 		inputFile = argv[1];
-		outputFile = "defaultOutput.txt";
+		outputFile = "defaultoutput2.txt";
 	}
 	else {						//both given as commanline arguments
 		inputFile = argv[1];
 		outputFile = argv[2];
+		if(strcmp(inputFile, outputFile) == 0){
+			fprintf(stderr, "Input and output file must differ.\n");
+			exit(1);
+		}
 	}
 
 	readFile(inputFile, outputFile);
